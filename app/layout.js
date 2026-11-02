@@ -9,7 +9,6 @@ import './assets/css/font-awesome.min.css';
 import './assets/css/feathericon.min.css';
 import './assets/plugins/morris/morris.css';
 import './assets/css/style.css';
-import './auth/AssetGuard/MosyAuthUI.css'
 import TopLoader from './components/TopLoader.jsx';
 
 export default function RootLayout({ children }) {
