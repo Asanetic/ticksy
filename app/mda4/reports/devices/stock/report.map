@@ -1,0 +1,24 @@
+report Stock "Devices by Model"
+  by dimension
+  date reg_date
+  entity simukopa_devices_stock
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group model_name
+  rows "Model"
+  sort phones desc
+
+  phones = count phones "Devices"
+  in_stock = count phones where status=in_stock "In Stock"
+  allocated = count phones where status=allocated "Allocated"
+  locked = count phones where lock_status=locked "Locked"
+  stock_value = sum phones.purchase_price where status=in_stock "Stock Value" money
+  share = share(stock_value) "Share of Stock"
+
+  headline {label} has the most devices: {phones} in total, {in_stock} in stock and {allocated} allocated.
+  remark in_stock == 0 && allocated > 0 | watch | Out of stock | {label} has no stock left, with {allocated} devices allocated.
+  remark locked > 0 | watch | Locked devices | {locked} {label} devices are locked.
+  remark true | neutral | Stock | {in_stock} in stock worth {stock_value}, {allocated} allocated.

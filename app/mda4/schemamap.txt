@@ -1,0 +1,55 @@
+check_ins:check_in_id|ticket_id:ticket_id:tickets(Ticket),event_id:event_id:events(Event),staff_user_id:record_id:system_users(Check-in Staff)
+
+events:name|organiser_id:organiser_id:organisers(Organiser),created_by:record_id:system_users(Created By)
+
+mosy_metrics:label|
+
+mosy_reminder_log:log_id|reminder_id:reminder_id:mosy_reminders(Reminder)
+
+mosy_reminders:subject|
+
+mosy_sql_roll_back:roll_bk_key|
+
+order_items:ticket_name_snapshot|order_id:order_id:orders(Order),ticket_type_id:ticket_type_id:ticket_types(Ticket Type)
+
+orders:order_number|event_id:event_id:events(Event)
+
+organisers:name|
+
+page_manifest_:page_url|
+
+payments:payment_id|order_id:order_id:orders(Order)
+
+smart_calls:call_number|
+
+smart_message_templates:template_name|created_by:record_id:system_users(Created By),last_updated_by:record_id:system_users(Last Updated By)
+
+smart_messages:message_number|sent_by:record_id:system_users(Sent By)
+
+smart_payment_requests:request_reference|created_by:record_id:system_users(Created By)
+
+smart_payment_settings:setting_name|created_by:record_id:system_users(Created By),last_updated_by:record_id:system_users(Last Updated By)
+
+smart_payments:payment_reference|request_reference:request_reference:smart_payment_requests(Payment Request),processed_by:record_id:system_users(Processed By)
+
+system_module_manifest_:module_name|
+
+system_modules:module_name|
+
+system_role_bundles:bundle_name|
+
+system_role_permissions:record_id|role_id:record_id:system_roles(Role),module_id:record_id:system_modules(Module)
+
+system_roles:role_name|
+
+system_users:name|
+
+ticket_types:name|event_id:event_id:events(Event)
+
+tickets:ticket_number|order_item_id:order_item_id:order_items(Order Item),event_id:event_id:events(Event),ticket_type_id:ticket_type_id:ticket_types(Ticket Type)
+
+user_bundle_role_functions:role_name|bundle_id:bundle_id:system_role_bundles(Role Bundle),role_id:record_id:system_roles(Role)
+
+user_manifest_:user_name|user_id:record_id:system_users(User),role_id:record_id:system_roles(Role)
+
+users:full_name|organiser_id:organiser_id:organisers(Organiser)

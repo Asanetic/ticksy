@@ -1,0 +1,18 @@
+report Growth "Client Growth"
+  by month|year
+  date reg_date
+  entity simukopa_clients_growth
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  new_clients = count clients "New Clients"
+  chg = change(new_clients) "vs Previous"
+
+  forecast new_clients next 7
+
+  headline {label}: {new_clients} new clients[, {updown} {abs(chg)}% on {prev_label}].
+  remark new_clients == 0 | watch | No new clients | No clients registered in {label}.
+  remark chg !== null && chg <= -25 | watch | Slowing | {label}: {new_clients} new clients, down {abs(chg)}% on {prev_label}.
+  remark true | neutral | Registrations | {new_clients} new clients registered in {label}.

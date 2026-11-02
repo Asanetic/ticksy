@@ -1,0 +1,26 @@
+report Allocations "Device Allocations"
+  by month|day|year
+  date allocation_date
+  entity simukopa_devices_allocations
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  allocated = count device_allocations "Devices Allocated"
+  returned = count device_allocations where status=returned "Returned"
+  deposits = sum device_allocations.deposited_amount "Deposits Taken" money
+  cost = sum device_allocations.buying_price "Buying Cost" money
+  selling = sum device_allocations.selling_price "Selling Price" money
+  margin = selling - cost "Device Margin" money
+  margin_pct = round(margin / cost * 100) "Margin %"
+  locks = count device_events where event_type=lock by=event_date "Lock Commands"
+  chg = change(allocated) "Allocated vs Previous"
+
+  forecast allocated next 10
+  forecast selling next 10
+
+  headline {label}: {allocated} devices allocated, {margin} margin on a {selling} selling price.
+  remark allocated == 0 | watch | No allocations | No devices were allocated in {label}.
+  remark returned > 0 | watch | Returns | {returned} of the {allocated} devices allocated in {label} were returned.
+  remark true | neutral | Device activity | {allocated} devices allocated with {deposits} in deposits and {margin} margin.

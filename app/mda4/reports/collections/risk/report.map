@@ -1,0 +1,28 @@
+report Risk "Contract Risk Score"
+  by dimension
+  date due_date
+  entity simukopa_collections_risk
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group loan_id
+  rows "Contract"
+  labels loans.record_id > contract_number
+  sort score desc
+
+  late = count loan_installments where status=overdue "Overdue Installments"
+  late_amount = sum loan_installments.balance_amount where status=overdue "Overdue Amount" money
+  penalties = sum loan_installments.penalty_amount where status=overdue "Penalties" money
+  actions = count collection_actions by=action_date "Follow-ups"
+  promised = sum collection_actions.promise_amount by=action_date "Promised" money
+  lateness_pts = min(late, 4) * 2 "Lateness Points"
+  chase_pts = min(late, 1) * (1 - min(actions, 1)) * 3 "No Follow-up Points"
+  penalty_pts = min(round(penalties / 1000), 2) "Penalty Points"
+  score = lateness_pts + chase_pts + penalty_pts "Risk Score"
+
+  headline {label} carries the highest risk: score {score} with {late_amount} overdue.
+  remark score >= 9 | bad | High risk | {label} scores {score}: {late} overdue installments worth {late_amount}, {actions} follow-ups.
+  remark score >= 4 | watch | Medium risk | {label} scores {score}: {late} overdue installments worth {late_amount}.
+  remark true | good | Low risk | {label} scores {score} and has little or nothing overdue.

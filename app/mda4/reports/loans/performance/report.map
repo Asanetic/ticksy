@@ -1,0 +1,32 @@
+report Performance "Loan Performance"
+  by month|day|year
+  date start_date
+  entity simukopa_loans_performance
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter payment_frequency = payment_frequency
+  filter status = status
+
+  loans = count loans "Loans Issued"
+  principal = sum loans.principal_amount "Principal Lent" money
+  interest = sum loans.interest_amount "Interest" money
+  fees = sum loans.processing_fee "Processing Fees" money
+  expected = sum loans.total_amount "To Be Repaid" money
+  deposits = sum loans.deposit_amount "Deposits Taken" money
+  balance = sum loans.balance_amount "Still Owed" money
+  defaulted = count loans where default_status=defaulted "Defaulted Loans"
+  earnings = interest + fees "Interest and Fees" money
+  avg_loan = principal / loans "Average Loan" money
+  chg = change(principal) "Lent vs Previous"
+
+  forecast loans next 10
+  forecast principal next 10
+
+  headline {label}: {loans} loans issued, {principal} lent[, {updown} {abs(chg)}% on {prev_label}].
+  remark loans == 0 | watch | No loans | No loans were issued in {label}.
+  remark defaulted > 0 | bad | Defaults | {defaulted} of the {loans} loans issued in {label} have defaulted, with {balance} still owed.
+  remark chg !== null && chg <= -20 | watch | Lending dropped | {label}: {principal} lent, down {abs(chg)}% on {prev_label}.
+  remark true | neutral | Loan activity | {loans} loans worth {principal} issued, with {earnings} in interest and fees.

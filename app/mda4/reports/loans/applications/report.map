@@ -1,0 +1,25 @@
+report Applications "Loan Applications"
+  by month|day|year
+  date application_date
+  entity simukopa_loans_applications
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  filter status = status
+
+  applied = count loan_applications "Applications"
+  approved = count loan_applications where status=approved "Approved"
+  requested = sum loan_applications.requested_amount "Amount Requested" money
+  approved_value = sum loan_applications.approved_amount where status=approved "Amount Approved" money
+  approval_rate = round(approved / applied * 100) "Approval %"
+  chg = change(applied) "Applied vs Previous"
+
+  forecast approved next 10
+  forecast approved_value next 10
+
+  headline {label}: {applied} applications, {approved} approved worth {approved_value}[, {updown} {abs(chg)}% on {prev_label}].
+  remark applied == 0 | watch | No applications | No loan applications were received in {label}.
+  remark approval_rate !== null && approval_rate < 50 | watch | Low approval | Only {approval_rate}% of the {applied} applications in {label} were approved.
+  remark true | neutral | Applications | {applied} applications, {approved} approved ({approval_rate}%), {approved_value} approved.

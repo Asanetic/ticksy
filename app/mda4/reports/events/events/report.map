@@ -1,0 +1,39 @@
+report Events "Event Performance"
+ by month|day|year
+ date reg_date
+ entity ticksy_event_performance
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ events = count events "Events Created"
+ capacity = sum events.capacity "Combined Event Capacity"
+ chg = change(events) "Events Created vs Previous"
+
+ forecast events next 6
+ forecast capacity next 6
+
+ headline {label}: {events} events created with a combined capacity of {capacity}.
+
+ remark events == 0 | watch | No events created | No events were created in {label}.
+ remark true | neutral | Event activity | {events} events were created with a combined capacity of {capacity}.
+
+
+# ============================================================
+# 3. PAYMENT COLLECTIONS
+# Tracks successful collections and payment exceptions.
+# Source table: payments
+#
+# Assumed successful statuses:
+# successful, success, paid, completed, complete
+#
+# Assumed pending statuses:
+# pending, processing
+#
+# Assumed failed/reversed statuses:
+# failed, reversed, cancelled, canceled
+#
+# Uses reg_date for reporting so pending and failed payment
+# records can also be included in their respective measures.
+# ============================================================

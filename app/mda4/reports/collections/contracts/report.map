@@ -1,0 +1,25 @@
+report Contracts "Overdue by Contract"
+  by dimension
+  date due_date
+  entity simukopa_collections_contracts
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  group loan_id
+  rows "Contract"
+  labels loans.record_id > contract_number
+  sort late_amount desc
+
+  late = count loan_installments where status=overdue "Overdue Installments"
+  late_amount = sum loan_installments.balance_amount where status=overdue "Overdue Amount" money
+  penalties = sum loan_installments.penalty_amount where status=overdue "Penalties" money
+  actions = count collection_actions by=action_date "Collection Actions"
+  promised = sum collection_actions.promise_amount by=action_date "Promised" money
+  share = share(late_amount) "Share of Overdue"
+
+  headline {label} is the most overdue: {late_amount} across {late} installments.
+  remark late > 0 && actions == 0 | bad | Not followed up | {label} owes {late_amount} overdue and has no collection action in this period.
+  remark late > 0 | watch | Overdue | {label}: {late} overdue installments worth {late_amount}, {actions} follow-ups recorded.
+  remark true | good | Up to date | {label} has nothing overdue in this period.

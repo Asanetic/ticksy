@@ -1,0 +1,127 @@
+RELATIONS REPORT — 10/25/2026, 12:28:29 PM — app: mda4
+Modules found: 10   FK links found: 14
+
+LINKED (12)
+  users.organiser_id -> organisers
+     users: view_users_organisers_profile
+     organisers: view_organisers_users
+     organisers: add_organisers_users
+     users: filter_users_organisers
+  events.organiser_id -> organisers
+     events: view_events_organisers_profile
+     organisers: view_organisers_events
+     organisers: add_organisers_events
+     events: filter_events_organisers
+  orders.event_id -> events
+     orders: view_orders_events_profile
+     events: view_events_orders
+     events: add_events_orders
+     orders: filter_orders_events
+  tickets.order_item_id -> order_items
+     tickets: view_tickets_orderitems_profile
+     orderitems: view_orderitems_tickets
+     orderitems: add_orderitems_tickets   also maps ticket_type_id
+     tickets: filter_tickets_orderitems
+  tickets.event_id -> events
+     tickets: view_tickets_events_profile
+     events: view_events_tickets
+     events: add_events_tickets
+     tickets: filter_tickets_events
+  tickets.ticket_type_id -> ticket_types
+     tickets: view_tickets_tickettypes_profile
+     tickettypes: view_tickettypes_tickets
+     tickettypes: add_tickettypes_tickets   also maps event_id
+     tickets: filter_tickets_tickettypes
+  checkins.ticket_id -> tickets
+     checkins: view_checkins_tickets_profile
+     tickets: view_tickets_checkins
+     tickets: add_tickets_checkins   also maps event_id
+     checkins: filter_checkins_tickets
+  checkins.event_id -> events
+     checkins: view_checkins_events_profile
+     events: view_events_checkins
+     events: add_events_checkins
+     checkins: filter_checkins_events
+  payments.order_id -> orders
+     payments: view_payments_orders_profile
+     orders: view_orders_payments
+     orders: add_orders_payments
+     payments: filter_payments_orders
+  orderitems.order_id -> orders
+     orderitems: view_orderitems_orders_profile
+     orders: view_orders_orderitems
+     orders: add_orders_orderitems
+     orderitems: filter_orderitems_orders
+  orderitems.ticket_type_id -> ticket_types
+     orderitems: view_orderitems_tickettypes_profile
+     tickettypes: view_tickettypes_orderitems
+     tickettypes: add_tickettypes_orderitems
+     orderitems: filter_orderitems_tickettypes
+  tickettypes.event_id -> events
+     tickettypes: view_tickettypes_events_profile
+     events: view_events_tickettypes
+     events: add_events_tickettypes
+     tickettypes: filter_tickettypes_events
+
+PENDING / PARTIAL (2)   — fix the reason, then run: node build-relations.js
+  events.created_by -> system_users
+     NOT BUILT — no module found for table "system_users" — build and clone it, then re-run
+  checkins.staff_user_id -> system_users
+     NOT BUILT — no module found for table "system_users" — build and clone it, then re-run
+
+COLUMN FILTERS (32)   — date columns and status/type/category-like columns
+  users.role [tag]   users: filter_users_role
+  users.status [tag]   users: filter_users_status
+  users.reg_date [date]   users: filter_users_reg_date
+  events.status [tag]   events: filter_events_status
+  events.starts_at [date]   events: filter_events_starts_at
+  events.ends_at [date]   events: filter_events_ends_at
+  events.reg_date [date]   events: filter_events_reg_date
+  orders.status [tag]   orders: filter_orders_status
+  orders.confirmed_at [date]   orders: filter_orders_confirmed_at
+  orders.expires_at [date]   orders: filter_orders_expires_at
+  orders.reg_date [date]   orders: filter_orders_reg_date
+  tickets.status [tag]   tickets: filter_tickets_status
+  tickets.issued_at [date]   tickets: filter_tickets_issued_at
+  tickets.used_at [date]   tickets: filter_tickets_used_at
+  tickets.reg_date [date]   tickets: filter_tickets_reg_date
+  checkins.scanned_at [date]   checkins: filter_checkins_scanned_at
+  checkins.reg_date [date]   checkins: filter_checkins_reg_date
+  payments.paid_at [date]   payments: filter_payments_paid_at
+  payments.status [tag]   payments: filter_payments_status
+  payments.reg_date [date]   payments: filter_payments_reg_date
+  messaging.message_type [tag]   messaging: filter_messaging_message_type
+  messaging.group_name [tag]   messaging: filter_messaging_group_name
+  messaging.message_date [date]   messaging: filter_messaging_message_date
+  messaging.sent_state [tag]   messaging: filter_messaging_sent_state
+  messaging.msg_read_state [tag]   messaging: filter_messaging_msg_read_state
+  orderitems.reg_date [date]   orderitems: filter_orderitems_reg_date
+  organisers.status [tag]   organisers: filter_organisers_status
+  organisers.reg_date [date]   organisers: filter_organisers_reg_date
+  tickettypes.sales_start_at [date]   tickettypes: filter_tickettypes_sales_start_at
+  tickettypes.sales_end_at [date]   tickettypes: filter_tickettypes_sales_end_at
+  tickettypes.status [tag]   tickettypes: filter_tickettypes_status
+  tickettypes.reg_date [date]   tickettypes: filter_tickettypes_reg_date
+
+ROW MENU LIMIT (5 per module) — these are on the profile page only, not in the row dropdown
+  events: add_events_checkins, add_events_orders, add_events_tickets, add_events_tickettypes
+
+FILES CHANGED (18) — previous copy of each is in <module>/_recycled/
+  app/mda4/users/logicControl/actionsRegistry.js
+  app/mda4/users/UsersSchema.js
+  app/mda4/events/logicControl/actionsRegistry.js
+  app/mda4/events/EventsSchema.js
+  app/mda4/orders/logicControl/actionsRegistry.js
+  app/mda4/orders/OrdersSchema.js
+  app/mda4/tickets/logicControl/actionsRegistry.js
+  app/mda4/tickets/TicketsSchema.js
+  app/mda4/checkins/logicControl/actionsRegistry.js
+  app/mda4/checkins/CheckinsSchema.js
+  app/mda4/payments/logicControl/actionsRegistry.js
+  app/mda4/payments/PaymentsSchema.js
+  app/mda4/orderitems/logicControl/actionsRegistry.js
+  app/mda4/orderitems/OrderitemsSchema.js
+  app/mda4/organisers/logicControl/actionsRegistry.js
+  app/mda4/organisers/OrganisersSchema.js
+  app/mda4/tickettypes/logicControl/actionsRegistry.js
+  app/mda4/tickettypes/TickettypesSchema.js

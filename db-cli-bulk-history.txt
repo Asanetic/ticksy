@@ -1,0 +1,1 @@
+organisers,users,events,ticket_types,orders,order_items,payments,tickets,check_ins

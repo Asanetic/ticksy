@@ -1,0 +1,18 @@
+report Upcoming "Expected Collections"
+  by month|day|year
+  date due_date
+  entity simukopa_collections_upcoming
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  due = count loan_installments "Installments Due"
+  scheduled = sum loan_installments.total_amount "Scheduled" money
+  balance = sum loan_installments.balance_amount "Still Unpaid" money
+  likely = round(balance * 0.85) "Likely to Collect" money
+  at_risk = balance - likely "At Risk" money
+
+  headline {label}: {balance} still to collect from {due} installments, {likely} likely and {at_risk} at risk.
+  remark due == 0 | neutral | Nothing due | No installments fall due in {label}.
+  remark true | neutral | Expected | {balance} unpaid across {due} installments, so about {likely} should come in and {at_risk} may not.

@@ -1,0 +1,30 @@
+report Tickets "Ticket Bookings"
+ by month|day|year
+ date issued_at
+ entity ticksy_ticket_bookings
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ issued = count tickets "Tickets Issued"
+ used = count tickets where status=used "Tickets Used"
+ cancelled = count tickets where status=cancelled "Cancelled Tickets"
+ chg = change(issued) "Tickets Issued vs Previous"
+
+ forecast issued next 6
+
+ headline {label}: {issued} tickets issued, {used} used[, {updown} {abs(chg)}% on {prev_label}].
+
+ remark issued == 0 | watch | No tickets issued | No tickets were issued in {label}.
+ remark used > issued | bad | Ticket count mismatch | Used tickets exceed issued tickets in {label}.
+ remark true | neutral | Ticket activity | {issued} tickets issued and {used} used in {label}.
+
+
+# ============================================================
+# 2. EVENT PERFORMANCE
+# Tracks events created and their combined ticket capacity.
+# Source table: events
+# Note: capacity is the sum of capacities for events created
+# within each reporting period, not tickets sold.
+# ============================================================

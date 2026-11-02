@@ -1,0 +1,35 @@
+report Payments "Payment Collections"
+ by month|day|year
+ date reg_date
+ entity ticksy_payment_collections
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ collected = sum payments.amount where status in successful,success,paid,completed,complete "Payments Received" money
+ payment_count = count payments where status in successful,success,paid,completed,complete "Successful Payments"
+ pending = sum payments.amount where status in pending,processing "Pending Amount" money
+ failed = count payments where status in failed,reversed,cancelled,canceled "Failed or Reversed Payments"
+ avg_payment = collected / payment_count "Average Successful Payment" money
+ chg = change(collected) "Collections vs Previous"
+
+ forecast collected next 6
+ forecast payment_count next 6
+
+ headline {label}: {collected} received from {payment_count} successful payments[, {updown} {abs(chg)}% on {prev_label}].
+
+ remark failed > 0 | watch | Payment exceptions | {failed} payments failed, were reversed or cancelled in {label}.
+ remark pending > 0 | watch | Pending payments | {pending} remains pending or processing in {label}.
+ remark true | neutral | Collections | {collected} collected across {payment_count} successful payments.
+
+
+# ============================================================
+# 4. ORGANIZER PERFORMANCE
+# Groups organizers and counts their registrations.
+# Source table: organisers
+#
+# This version intentionally reports organizer registrations.
+# It does not claim to calculate ticket sales or revenue because
+# those measures require verified relationships across tables.
+# ============================================================

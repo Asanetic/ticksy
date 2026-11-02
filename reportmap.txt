@@ -1,0 +1,126 @@
+# ============================================================
+# TICKSY TICKETS — REPORT MAP
+# Four reports:
+# 1. Ticket Bookings
+# 2. Event Performance
+# 3. Payment Collections
+# 4. Organizer Performance
+# ============================================================
+
+
+# ============================================================
+# 1. TICKET BOOKINGS
+# Tracks tickets issued, used, cancelled, and issuance trends.
+# Source table: tickets
+# ============================================================
+
+report Tickets "Ticket Bookings"
+ nest tickets
+ by month|day|year
+ date issued_at
+ entity ticksy_ticket_bookings
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ issued = count tickets "Tickets Issued"
+ used = count tickets where status=used "Tickets Used"
+ cancelled = count tickets where status=cancelled "Cancelled Tickets"
+ chg = change(issued) "Tickets Issued vs Previous"
+
+ forecast issued next 6
+
+ headline {label}: {issued} tickets issued, {used} used[, {updown} {abs(chg)}% on {prev_label}].
+
+ remark issued == 0 | watch | No tickets issued | No tickets were issued in {label}.
+ remark used > issued | bad | Ticket count mismatch | Used tickets exceed issued tickets in {label}.
+ remark true | neutral | Ticket activity | {issued} tickets issued and {used} used in {label}.
+
+
+# ============================================================
+# 2. EVENT PERFORMANCE
+# Tracks events created and their combined ticket capacity.
+# Source table: events
+# Note: capacity is the sum of capacities for events created
+# within each reporting period, not tickets sold.
+# ============================================================
+
+report Events "Event Performance"
+ nest events
+ by month|day|year
+ date reg_date
+ entity ticksy_event_performance
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ events = count events "Events Created"
+ capacity = sum events.capacity "Combined Event Capacity"
+ chg = change(events) "Events Created vs Previous"
+
+ forecast events next 6
+ forecast capacity next 6
+
+ headline {label}: {events} events created with a combined capacity of {capacity}.
+
+ remark events == 0 | watch | No events created | No events were created in {label}.
+ remark true | neutral | Event activity | {events} events were created with a combined capacity of {capacity}.
+
+
+# ============================================================
+# 3. PAYMENT COLLECTIONS
+# Tracks successful collections and payment exceptions.
+# Source table: payments
+#
+# Assumed successful statuses:
+# successful, success, paid, completed, complete
+#
+# Assumed pending statuses:
+# pending, processing
+#
+# Assumed failed/reversed statuses:
+# failed, reversed, cancelled, canceled
+#
+# Uses reg_date for reporting so pending and failed payment
+# records can also be included in their respective measures.
+# ============================================================
+
+report Payments "Payment Collections"
+ nest payments
+ by month|day|year
+ date reg_date
+ entity ticksy_payment_collections
+ role view_reports
+ currency KES
+ cache 60
+ maxrange 1200
+
+ collected = sum payments.amount where status in successful,success,paid,completed,complete "Payments Received" money
+ payment_count = count payments where status in successful,success,paid,completed,complete "Successful Payments"
+ pending = sum payments.amount where status in pending,processing "Pending Amount" money
+ failed = count payments where status in failed,reversed,cancelled,canceled "Failed or Reversed Payments"
+ avg_payment = collected / payment_count "Average Successful Payment" money
+ chg = change(collected) "Collections vs Previous"
+
+ forecast collected next 6
+ forecast payment_count next 6
+
+ headline {label}: {collected} received from {payment_count} successful payments[, {updown} {abs(chg)}% on {prev_label}].
+
+ remark failed > 0 | watch | Payment exceptions | {failed} payments failed, were reversed or cancelled in {label}.
+ remark pending > 0 | watch | Pending payments | {pending} remains pending or processing in {label}.
+ remark true | neutral | Collections | {collected} collected across {payment_count} successful payments.
+
+
+# ============================================================
+# 4. ORGANIZER PERFORMANCE
+# Groups organizers and counts their registrations.
+# Source table: organisers
+#
+# This version intentionally reports organizer registrations.
+# It does not claim to calculate ticket sales or revenue because
+# those measures require verified relationships across tables.
+# ============================================================
+

@@ -1,0 +1,23 @@
+report Profit "Profit and Risk"
+  by month|day|year
+  entity simukopa_finance_profit
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  interest_in = sum payment_allocations.interest_amount by=allocation_date "Interest Earned" money
+  fees_in = sum payment_allocations.fee_amount by=allocation_date "Fees Earned" money
+  penalty_in = sum payment_allocations.penalty_amount by=allocation_date "Penalties Earned" money
+  commission = sum commissions.amount where status=paid by=payment_date "Commissions Paid" money
+  late_balance = sum loan_installments.balance_amount where status=overdue by=due_date "Overdue Balance" money
+  default_balance = sum loans.balance_amount where default_status=defaulted by=start_date "Defaulted Balance" money
+  income = interest_in + fees_in + penalty_in "Income Earned" money
+  net = income - commission "Net After Commissions" money
+  chg = change(net) "Net vs Previous"
+
+  headline {label}: {income} earned, {net} after commissions[, {updown} {abs(chg)}% on {prev_label}].
+  remark net < 0 | bad | Loss | {label}: commissions of {commission} were more than the {income} earned.
+  remark late_balance > income | bad | Risk above income | {label}: {late_balance} is overdue, more than the {income} earned.
+  remark chg !== null && chg <= -20 | watch | Earnings fell | {label}: net {net}, down {abs(chg)}% on {prev_label}.
+  remark true | good | Healthy | {income} earned, {net} net, {late_balance} overdue and {default_balance} defaulted.

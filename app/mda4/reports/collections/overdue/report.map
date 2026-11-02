@@ -1,0 +1,24 @@
+report Overdue "Overdue Analysis"
+  by month|day|year
+  date due_date
+  entity simukopa_collections_overdue
+  role view_reports
+  currency KES
+  cache 60
+  maxrange 1200
+
+  due = count loan_installments "Installments Due"
+  expected = sum loan_installments.total_amount "Amount Due" money
+  paid = sum loan_installments.paid_amount "Paid" money
+  unpaid = sum loan_installments.balance_amount "Unpaid" money
+  late = count loan_installments where status=overdue "Overdue Installments"
+  late_amount = sum loan_installments.balance_amount where status=overdue "Overdue Amount" money
+  penalties = sum loan_installments.penalty_amount "Penalties Charged" money
+  rate = round(paid / expected * 100) "Collected %"
+  chg = change(late_amount) "Overdue vs Previous"
+
+  headline {label}: {due} installments due, {rate}% collected, {late_amount} overdue.
+  remark due == 0 | neutral | Nothing due | No installments fell due in {label}.
+  remark rate !== null && rate < 70 | bad | Weak collection | Only {rate}% of the {expected} due in {label} was collected, and {late_amount} is overdue.
+  remark late > 0 | watch | Overdue | {late} installments worth {late_amount} are overdue for {label}.
+  remark true | good | On track | {rate}% of the {expected} due in {label} was collected.

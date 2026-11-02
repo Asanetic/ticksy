@@ -1,0 +1,179 @@
+{
+  "smartapi": {
+    "base": "/api/mda4/smartapi"
+  },
+  "dashboard": {
+    "main": "/api/mda4/dashboard/main"
+  },
+  "smartmessages": {
+    "base": "/api/mda4/messages/list",
+    "delete": "/api/mda4/messages/list/delete",
+    "import": "/api/mda4/messages/import"
+  },
+  "messagetemplates": {
+    "base": "/api/mda4/messagetemplates/list",
+    "delete": "/api/mda4/messagetemplates/list/delete",
+    "import": "/api/mda4/messagetemplates/import"
+  },
+  "systemusers": {
+    "base": "/api/mda4/systemusers/list",
+    "delete": "/api/mda4/systemusers/list/delete",
+    "import": "/api/mda4/systemusers/import"
+  },
+  "businessbranches": {
+    "base": "/api/mda4/businessbranches/list",
+    "delete": "/api/mda4/businessbranches/list/delete",
+    "import": "/api/mda4/businessbranches/import"
+  },
+  "systemrolebundles": {
+    "base": "/api/mda4/systemrolebundles/list",
+    "delete": "/api/mda4/systemrolebundles/list/delete",
+    "import": "/api/mda4/systemrolebundles/import"
+  },
+  "clients": {
+    "base": "/api/mda4/clients/list",
+    "delete": "/api/mda4/clients/list/delete",
+    "import": "/api/mda4/clients/import"
+  },
+  "salespoint": {
+    "base": "/api/mda4/salespoint/list",
+    "delete": "/api/mda4/salespoint/list/delete",
+    "import": "/api/mda4/salespoint/import"
+  },
+  "kitcheningredients": {
+    "base": "/api/mda4/kitcheningredients/list",
+    "delete": "/api/mda4/kitcheningredients/list/delete",
+    "import": "/api/mda4/kitcheningredients/import"
+  },
+  "inventory": {
+    "base": "/api/mda4/inventory/list",
+    "delete": "/api/mda4/inventory/list/delete",
+    "import": "/api/mda4/inventory/import"
+  },
+  "salesorders": {
+    "base": "/api/mda4/salesorders/list",
+    "delete": "/api/mda4/salesorders/list/delete",
+    "import": "/api/mda4/salesorders/import"
+  },
+  "kitchenproduction": {
+    "base": "/api/mda4/kitchenproduction/list",
+    "delete": "/api/mda4/kitchenproduction/list/delete",
+    "import": "/api/mda4/kitchenproduction/import"
+  },
+  "kitchenrecipes": {
+    "base": "/api/mda4/kitchenrecipes/list",
+    "delete": "/api/mda4/kitchenrecipes/list/delete",
+    "import": "/api/mda4/kitchenrecipes/import"
+  },
+  "shifts": {
+    "base": "/api/mda4/shifts/list",
+    "delete": "/api/mda4/shifts/list/delete",
+    "import": "/api/mda4/shifts/import"
+  },
+  "stocktransfers": {
+    "base": "/api/mda4/stocktransfers/list",
+    "delete": "/api/mda4/stocktransfers/list/delete",
+    "import": "/api/mda4/stocktransfers/import"
+  },
+  "events": {
+    "base": "/api/mda4/events/list",
+    "delete": "/api/mda4/events/list/delete",
+    "import": "/api/mda4/events/import"
+  },
+  "systemmodules": {
+    "base": "/api/mda4/systemmodules/list",
+    "delete": "/api/mda4/systemmodules/list/delete",
+    "import": "/api/mda4/systemmodules/import"
+  },
+  "orders": {
+    "base": "/api/mda4/orders/list",
+    "delete": "/api/mda4/orders/list/delete",
+    "import": "/api/mda4/orders/import"
+  },
+  "orderitems": {
+    "base": "/api/mda4/orderitems/list",
+    "delete": "/api/mda4/orderitems/list/delete",
+    "import": "/api/mda4/orderitems/import"
+  },
+  "organisers": {
+    "base": "/api/mda4/organisers/list",
+    "delete": "/api/mda4/organisers/list/delete",
+    "import": "/api/mda4/organisers/import"
+  },
+  "mosyreminders": {
+    "base": "/api/mda4/mosyreminders/list",
+    "delete": "/api/mda4/mosyreminders/list/delete",
+    "import": "/api/mda4/mosyreminders/import"
+  },
+  "smartpaymentrequests": {
+    "base": "/api/mda4/smartpaymentrequests/list",
+    "delete": "/api/mda4/smartpaymentrequests/list/delete",
+    "import": "/api/mda4/smartpaymentrequests/import"
+  },
+  "systemroles": {
+    "base": "/api/mda4/systemroles/list",
+    "delete": "/api/mda4/systemroles/list/delete",
+    "import": "/api/mda4/systemroles/import"
+  },
+  "tickets": {
+    "base": "/api/mda4/tickets/list",
+    "delete": "/api/mda4/tickets/list/delete",
+    "import": "/api/mda4/tickets/import"
+  },
+  "tickettypes": {
+    "base": "/api/mda4/tickettypes/list",
+    "delete": "/api/mda4/tickettypes/list/delete",
+    "import": "/api/mda4/tickettypes/import"
+  },
+  "users": {
+    "base": "/api/mda4/users/list",
+    "delete": "/api/mda4/users/list/delete",
+    "import": "/api/mda4/users/import"
+  },
+  "payments": {
+    "base": "/api/mda4/payments/list",
+    "delete": "/api/mda4/payments/list/delete",
+    "import": "/api/mda4/payments/import"
+  },
+  "checkins": {
+    "base": "/api/mda4/checkins/list",
+    "delete": "/api/mda4/checkins/list/delete",
+    "import": "/api/mda4/checkins/import"
+  },
+  "loansperformance": {
+    "base": "/api/mda4/reports/loans/performance/list"
+  },
+  "collectionsoverdue": {
+    "base": "/api/mda4/reports/collections/overdue/list"
+  },
+  "collectionscontracts": {
+    "base": "/api/mda4/reports/collections/contracts/list"
+  },
+  "devicesallocations": {
+    "base": "/api/mda4/reports/devices/allocations/list"
+  },
+  "devicesstock": {
+    "base": "/api/mda4/reports/devices/stock/list"
+  },
+  "financeprofit": {
+    "base": "/api/mda4/reports/finance/profit/list"
+  },
+  "collectionsrisk": {
+    "base": "/api/mda4/reports/collections/risk/list"
+  },
+  "collectionsupcoming": {
+    "base": "/api/mda4/reports/collections/upcoming/list"
+  },
+  "clientsgrowth": {
+    "base": "/api/mda4/reports/clients/growth/list"
+  },
+  "loansapplications": {
+    "base": "/api/mda4/reports/loans/applications/list"
+  },
+  "ticketstickets": {
+    "base": "/api/mda4/reports/tickets/tickets/list"
+  },
+  "eventsevents": {
+    "base": "/api/mda4/reports/events/events/list"
+  }
+}
